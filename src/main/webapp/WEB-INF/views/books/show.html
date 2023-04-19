@@ -6,11 +6,11 @@
 </head>
 <body>
 <p th:text="${book.getName() + ', ' + book.getAge() + ', ' + book.getWriter()}">VALUE</p>
-<p th:text="${book.getId()}">VALUE</p>
+<p th:text="${book.getBook_id()}">VALUE</p>
 
-<a th:href="@{/books/{id}/edit(id=${book.getId()})}">Edit</a>
+<a th:href="@{/books/{book_id}/edit(book_id=${book.getBook_id()})}">Edit</a>
 
-<form th:method="DELETE" th:action="@{/books/{id}(id=${book.getId()})}">
+<form th:method="DELETE" th:action="@{/books/{book_id}(book_id=${book.getBook_id()})}">
     <input type="submit" value="Delete"/>
 
 </form>

@@ -2,22 +2,19 @@
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
-    <title>Show book</title>
+    <title>Index</title>
 </head>
 <body>
-<p th:text="${book.getName() + ', ' + book.getAge() + ', ' + book.getWriter()}">VALUE</p>
-<p th:text="${book.getId()}">VALUE</p>
+
+<div th:each="book : ${book}">
+    <a th:href="@{/books/{book_id}/add(book_id=${book.getBook_id()})}"
+       th:text="${book.getName() + ', ' + book.getAge() + ', ' + book.getWriter()}">book</a>
+</div>
+
+<br/>
+<hr/>
 
 
 
-<form th:method="PATCH" th:action="@{/books/add/{id}(id=${book.getId()})">
-    <label for="person">Выберите держателя клиги:</label>
-    <select th:object="${person}" th:field="*{id}" id="person">
-        <option th:each="person : ${people}" th:value="${person.gerId()}"
-                th:text="${person.getFullName()}"></option>
-    </select>
-
-</form>
 </body>
 </html>
-

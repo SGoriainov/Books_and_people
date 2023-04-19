@@ -5,7 +5,7 @@ import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.Size;
 
 public class Book {
-    private int id;
+    private int book_id;
     //private int person_id;
     @NotEmpty(message = "Book name should not be empty")
     @Size(min = 2, max = 30, message = "Book name size should be between 2 and 30 characters")
@@ -17,20 +17,20 @@ public class Book {
     public Book () {}
 
 
-    public Book (int id, String name, String writer, int age) {
+    public Book (int book_id, String name, String writer, int age) {
 
-        this.id = id;
+        this.book_id = book_id;
         this.name = name;
         this.writer = writer;
         this.age = age;
     }
 
-    public int getId() {
-        return id;
+    public int getBook_id() {
+        return book_id;
     }
 
-    public void setId(int id) {
-        this.id = id;
+    public void setBook_id(int book_id) {
+        this.book_id = book_id;
     }
 
     public String getName() {

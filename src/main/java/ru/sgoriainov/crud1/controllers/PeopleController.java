@@ -30,6 +30,7 @@ public class PeopleController {
     @GetMapping("/{id}")
     public String show(@PathVariable("id") int id, Model model) {
         model.addAttribute("person", personDAO.show(id));
+        // нужен еще метод чтобы передавать книги которые есть у этого человека
         return "people/show";
     }
 
