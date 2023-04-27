@@ -7,6 +7,7 @@ import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 import ru.sgoriainov.crud1.dao.PersonDAO;
 import ru.sgoriainov.crud1.models.Person;
+import ru.sgoriainov.crud1.util.PersonValidator;
 
 import javax.validation.Valid;
 
@@ -15,10 +16,12 @@ import javax.validation.Valid;
 public class PeopleController {
 
     private final PersonDAO personDAO;
+    private final PersonValidator personValidator;
 
     @Autowired
-    public PeopleController(PersonDAO personDAO) {
+    public PeopleController(PersonDAO personDAO, PersonValidator personValidator) {
         this.personDAO = personDAO;
+        this.personValidator = personValidator;
     }
 
     @GetMapping()
@@ -30,6 +33,7 @@ public class PeopleController {
     @GetMapping("/{id}")
     public String show(@PathVariable("id") int id, Model model) {
         model.addAttribute("person", personDAO.show(id));
+        model.addAttribute("books",personDAO.getBooksByPersonId(id));
         // нужен еще метод чтобы передавать книги которые есть у этого человека
         return "people/show";
     }
@@ -42,6 +46,8 @@ public class PeopleController {
     @PostMapping()
     public String create(@ModelAttribute("person") @Valid Person person,
                          BindingResult bindingResult) {
+        personValidator.validate(person,bindingResult);
+
         if (bindingResult.hasErrors())
             return "people/new";
 

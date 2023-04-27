@@ -6,17 +6,21 @@
 </head>
 <body>
 
-<div th:each="book : ${book}">
-    <a th:href="@{/books/{book_id}(book_id=${book.getBook_id()})}"
-       th:text="${book.getName() + ', ' + book.getAge() + ', ' + book.getWriter()}">book</a>
+<div th:each="book : ${books}">
+    <a th:href="@{/books/{id}(id=${book.getId()})}"
+       th:text="${book.getTitle() + ', ' + book.getAuthor() + ', ' + book.getYear()}">book</a>
 </div>
 
-<br/>
-<a href="/books/holder">Выдать книгу</a>
 <br/>
 <hr/>
 
 <a href="/books/new">Create new book</a>
+
+<br/>
+<hr/>
+
+<a href="/people">Все пользователи бибилиотеки</a>
+
 
 </body>
 </html>
