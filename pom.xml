@@ -94,8 +94,9 @@
     <dependency>
       <groupId>org.hibernate.orm</groupId>
       <artifactId>hibernate-core</artifactId>
-      <version>6.2.2.Final</version>
+      <version>6.2.3.Final</version>
     </dependency>
+
 
     <!-- https://mvnrepository.com/artifact/org.springframework/spring-orm -->
     <dependency>

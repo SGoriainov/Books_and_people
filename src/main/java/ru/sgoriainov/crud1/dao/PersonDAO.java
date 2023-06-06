@@ -1,12 +1,15 @@
 package ru.sgoriainov.crud1.dao;
 
+import org.hibernate.Session;
+import org.hibernate.SessionFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.BeanPropertyRowMapper;
-import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Component;
+import org.springframework.transaction.annotation.Transactional;
 import ru.sgoriainov.crud1.models.Book;
 import ru.sgoriainov.crud1.models.Person;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -14,43 +17,54 @@ import java.util.Optional;
 @Component
 
 public class PersonDAO {
-    private final JdbcTemplate jdbcTemplate;
+    private final SessionFactory sessionFactory;
 
     @Autowired
-    public PersonDAO(JdbcTemplate jdbcTemplate) {
-        this.jdbcTemplate = jdbcTemplate;
+    public PersonDAO(SessionFactory sessionFactory) {
+        this.sessionFactory = sessionFactory;
     }
 
+    @Transactional (readOnly = true)
     public List<Person> index() {
-        return jdbcTemplate.query("SELECT * FROM Person", new BeanPropertyRowMapper<>(Person.class));
+        Session session = sessionFactory.getCurrentSession();
+        List <Person> people = session.createQuery("select p from Person p", Person.class)
+                .getResultList();
+        return people;
+
     }
 
+    @Transactional
     public Person show(int id) {
-        return jdbcTemplate.query("SELECT * FROM Person WHERE id=?", new Object[]{id}, new BeanPropertyRowMapper<>(Person.class))
-                .stream().findAny().orElse(null);
+        Session session = sessionFactory.getCurrentSession();
+        return session.get(Person.class,id);
     }
 
+    @Transactional
     public void save(Person person) {
-        jdbcTemplate.update("INSERT INTO Person (full_name, age) VALUES(?, ?)", person.getFullName(), person.getAge());
+        Session session = sessionFactory.getCurrentSession();
+        session.persist(person);
     }
 
+    @Transactional
     public void update(int id, Person updatedPerson) {
-        jdbcTemplate.update("UPDATE Person SET full_name=?, age=? WHERE id=?", updatedPerson.getFullName(),
-                updatedPerson.getAge(), id);
+        Session session = sessionFactory.getCurrentSession();
+        Person person = session.get(Person.class,id);
+        person.setAge(updatedPerson.getAge());
+        person.setFullName(updatedPerson.getFullName());
     }
 
+    @Transactional
     public void delete(int id) {
-        jdbcTemplate.update("DELETE FROM Person WHERE id=?", id);
+        Session session = sessionFactory.getCurrentSession();
+        session.remove(session.get(Person.class,id));
     }
 
     public Optional<Person> getPersonByFullName(String fullName) {
-        return jdbcTemplate.query("SELECT * FROM Person WHERE full_name=?", new Object[]{fullName},
-                new BeanPropertyRowMapper<>(Person.class)).stream().findAny();
+     return null;
     }
 
     public List<Book> getBooksByPersonId(int id) {
-        return jdbcTemplate.query("SELECT * FROM Book WHERE person_id = ?", new Object[]{id},
-                new BeanPropertyRowMapper<>(Book.class));
+        return null;
     }
 }
 
