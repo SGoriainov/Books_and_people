@@ -42,7 +42,7 @@ public class PersonDAO {
     @Transactional
     public void save(Person person) {
         Session session = sessionFactory.getCurrentSession();
-        session.persist(person);
+        session.save(person);
     }
 
     @Transactional
